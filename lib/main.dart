@@ -1,53 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:web_ffi/web_ffi.dart';
+import 'dart:convert';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+        title: 'Flutter Demo Page',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage());
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+String stringResponse;
+Map mapResponse;
+Map dataResponse;
 
+class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  Future apicall() async {
+    http.Response response;
+    response = await http.get(Uri.parse('https://reqres.in/api/users/2'));
+    if (response.statusCode == 200) {
+      setState(() {
+        stringResponse = response.body;
+        mapResponse = json.decode(response.body);
+        dataResponse = mapResponse['data'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    apicall();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: Center(
-          child: Container(
-            width: 300,
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Center(
-              child: const Text(
-                'this is api example integration',
-              ),
-            ),
+      appBar: AppBar(
+        title: const Text('API Integration Example'),
+      ),
+      body: Center(
+        child: Container(
+          width: 300,
+          height: 200,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(20),
           ),
-        ));
+          child: Center(
+            child: Text(
+                // stringResponse.toString()
+                // mapResponse == null
+                //     ? Text('data is loading')
+                //     : mapResponse['data']['email'].toString()),
+                dataResponse == null ?
+                  Container(): dataResponse['email'].toString()
+          ),
+        ),
+      ),
+    ));
   }
 }
