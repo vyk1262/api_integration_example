@@ -1,5 +1,6 @@
 import 'package:api_integration_example/complete_ui.dart';
 import 'package:api_integration_example/multi_user.dart';
+import 'package:api_integration_example/typicode_api.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -80,9 +81,8 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => MultiUser()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MultiUser()));
                   },
                   child: Text('Multi-user-api Response'),
                 ),
@@ -90,13 +90,21 @@ class _MyHomePageState extends State<MyHomePage> {
               Container(
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => CompleteUi()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => CompleteUi()));
                   },
                   child: Text('Complete Ui Response From API'),
                 ),
-              )
+              ),
+              Container(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => TypicodeApi()));
+                  },
+                  child: Text('Typicode Api Response'),
+                ),
+              ),
             ],
           ),
         ));
